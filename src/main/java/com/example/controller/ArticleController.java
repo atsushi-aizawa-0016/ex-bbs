@@ -43,7 +43,7 @@ public class ArticleController {
 	 * @return 記事、コメント一覧
 	 */
 	@RequestMapping("")
-	public String index(String articleId,Model model) {
+	public String index(Model model) {
 		List<Article> articleList = articleRepository.findAll();
 		for (Article article : articleList) {
 			List<Comment> commentList = commentRepository.findByArticleId(article.getId());
@@ -74,6 +74,7 @@ public class ArticleController {
 	 * @param comForm コメント情報
 	 * @return 最初の画面に戻る
 	 */
+	@RequestMapping("/insert-comment")
 	public String insertComment(CommentForm comForm) {
 		Comment comment = new Comment();
 		comment.setName(comForm.getName());
@@ -82,6 +83,11 @@ public class ArticleController {
 		commentRepository.insert(comment);
 		return "redirect:/";
 	}
-	
+	@RequestMapping("/delete-article")
+	public String deleteArticle(int articleId,int id) {
+		commentRepository.deleteByArticleId(articleId);
+		articleRepository.deletById(id);
+		return "redirect:/";
+	}
 	
 }

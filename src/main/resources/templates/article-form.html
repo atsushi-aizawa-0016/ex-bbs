@@ -12,24 +12,29 @@
 	<button>記事投稿</button>
 	<hr>
 </form>
-<!-- <form method="post" th:action="@{/delete-article}" th:object="${articleForm}"> -->
-	<span th:each="article:${articleList}">
-		投稿ID ：<span th:text="${article.id}">dummy</span><br>
-		投稿者名：<span th:text="${article.name}">dummy</span><br>
-		投稿内容：<span th:text="${article.content}">dummy</span><br>
-		<button>記事削除</button><br>
+	<div th:each="article:${articleList}">
+		<form method="post" th:action="@{'/delete-article?id='+${article.id}}" th:object="${articleForm}">
+		<!-- th:href="@{'/employee/showDetail?id='+${employee.id}}" -->
+			投稿ID ：<span th:text="${article.id}">dummy</span><br>
+			投稿者名：<span th:text="${article.name}">dummy</span><br>
+			投稿内容：<span th:text="${article.content}">dummy</span><br>
+			<input type="hidden" name="articleId" th:value="${article.id}">
+			<button>記事削除</button><br>
+		</form>
 		<span th:each="comment:${article.commentList}">
 			コメントID：<span th:text="${comment.id}">dummy</span><br>
 			コメント者名：<span th:text="${comment.name}">dummy</span><br>
 			コメント内容：<span th:text="${comment.content}">dummy</span><br>
 		</span><br>
-	</span><br>
+		
+		<form method="post" action="article-form" th:action="@{/insert-comment}" th:object="${commentForm}">
+			<input type="hidden" name="articleId" th:value="${article.id}">
+				コメント者名：<input type="text" name="name"><br>
+				コメント内容：<textarea rows="4" cols="40" name="content"></textarea><br>
+			<button>コメント投稿</button><br>
+		</form>
+	</div><br>
 <!-- </form> -->
-<form method="post" action="article-form" th:action="@{/insert-comment}" th:object="${commentForm}">
-	コメント者名：<input type="text" name="name"><br>
-	コメント内容：<textarea rows="4" cols="40" name="content"></textarea><br>
-	<button>コメント投稿</button><br>
-</form>
 
 </body>
 </html>
